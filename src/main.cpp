@@ -35,10 +35,8 @@ void loop()
 {
   randNumber = random(rangeRandom); // Generate a random color number: 0, 1, 2, or 3.
   Serial.println(randNumber);       // Print the generated random number to the serial monitor
-
   digitalWrite(ledPins[randNumber], HIGH); // Turn on the LED corresponding to the random number
   delay(ledOnTime);                        // Wait for the specified on time before turning off the LED
-
   digitalWrite(ledPins[randNumber], LOW); // Turn off the LED corresponding to the random number
   delay(ledOffTime);                      // Wait for the specified off time before the next loop iteration
 }
