@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include "pitches.h"
+
+#define BUZZ_PASSIVE_PIN 8 // Pin connected to the passive buzzer
 
 const int greenNumber = 0;  // int representing the green LED
 const int redNumber = 1;    // int representing the red LED
@@ -11,9 +14,10 @@ int randNumber;                                   // int representing the curren
 int listOfRandomNumbers[listOfRandomNumbersSize]; // array to store the sequence of random numbers
 int temp;                                         // temporary variable for storing intermediate values
 
-// Array index matches each LED's assigned number:
-// 0 = green, 1 = red, 2 = yellow, 3 = blue
+// Matching indices link each color to its LED pin and sound.
+// Index:                    green    red      yellow   blue
 const int ledPins[rangeRandom] = {4, 5, 6, 7};
+const int ledNotes[rangeRandom] = {NOTE_C4, NOTE_E4, NOTE_G4, NOTE_C5};
 
 const int ledOnTime = 500;  // LED stays on for 500 milliseconds
 const int ledOffTime = 250; // Pause between flashes
@@ -29,14 +33,17 @@ void setup()
     pinMode(ledPins[i], OUTPUT);   // Set each LED pin as an output
     digitalWrite(ledPins[i], LOW); // Ensure each LED is initially off
   }
+  pinMode(BUZZ_PASSIVE_PIN, OUTPUT);
 }
 
 void loop()
 {
-  randNumber = random(rangeRandom); // Generate a random color number: 0, 1, 2, or 3.
-  Serial.println(randNumber);       // Print the generated random number to the serial monitor
-  digitalWrite(ledPins[randNumber], HIGH); // Turn on the LED corresponding to the random number
-  delay(ledOnTime);                        // Wait for the specified on time before turning off the LED
-  digitalWrite(ledPins[randNumber], LOW); // Turn off the LED corresponding to the random number
-  delay(ledOffTime);                      // Wait for the specified off time before the next loop iteration
+  randNumber = random(rangeRandom);             // Generate a random color number: 0, 1, 2, or 3.
+  Serial.println(randNumber);                   // Print the generated random number to the serial monitor
+  digitalWrite(ledPins[randNumber], HIGH);      // Turn on the LED corresponding to the random number
+  tone(BUZZ_PASSIVE_PIN, ledNotes[randNumber]); // Play the corresponding note on the passive buzzer
+  delay(ledOnTime);                             // Wait for the specified on time before turning off the LED
+  digitalWrite(ledPins[randNumber], LOW);       // Turn off the LED corresponding to the random number
+  noTone(BUZZ_PASSIVE_PIN);                     // Stop the sound on the passive buzzer
+  delay(ledOffTime);                            // Wait for the specified off time before the next loop iteration
 }
