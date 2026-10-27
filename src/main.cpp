@@ -10,7 +10,7 @@ const int blueNumber = 3;       // int representing the blue LED
 const int correctLEDPin = 9;    // Pin connected to the LED indicating a correct sequence
 const int incorrectLEDPin = 10; // Pin connected to the LED indicating an incorrect sequence
 
-const int listOfRandomNumbersSize = 5;           // int representing the size of the array to store random numbers (max length of game)
+const int listOfRandomNumbersSize = 20;            // int representing the size of the array to store random numbers (max length of game)
 const int rangeRandom = 4;                        // int representing the range of random numbers (0 to 3)
 int randNumber;                                   // int representing the current random number
 int listOfRandomNumbers[listOfRandomNumbersSize]; // array to store the sequence of random numbers
@@ -87,13 +87,13 @@ void waitForButtonRelease() // Function to wait for a button press with debounce
     allButtonsReleased = true; // Assume all buttons are released initially
     for (int i = 0; i < rangeRandom; i++)
     {
-      if (digitalRead(buttonPins[i]) == LOW)
-      {                             // Check if any button is still pressed
+      if (digitalRead(buttonPins[i]) == LOW) // Check if any button is still pressed
+      {
         allButtonsReleased = false; // If a button is pressed, set the flag to false
       }
     }
 
-    if (!allButtonsReleased)
+    if (!allButtonsReleased) // If any button is still pressed, reset the debounce timer
     {
       startTime = millis(); // Reset the start time if any button is still pressed
     }
@@ -102,9 +102,9 @@ void waitForButtonRelease() // Function to wait for a button press with debounce
 
 int readButton() // Function to read the state of a button with debounce
 {
-  while (true)
+  while (true) // Loop indefinitely until a button press is detected
   {
-    for (int i = 0; i < rangeRandom; i++)
+    for (int i = 0; i < rangeRandom; i++) // Loop through each button pin to check if it is pressed
     {
       if (digitalRead(buttonPins[i]) == LOW) // Check if the button is pressed
       {
@@ -184,23 +184,3 @@ void loop()
     sequenceLength++; // Increase the sequence length for the next round
   }
 }
-
-// Previous loop code for generating random LED sequences and testing feedback
-
-// randNumber = random(rangeRandom);             // Generate a random color number: 0, 1, 2, or 3.
-// Serial.println(randNumber);                   // Print the generated random number to the serial monitor
-// digitalWrite(ledPins[randNumber], HIGH);      // Turn on the LED corresponding to the random number
-// tone(BUZZ_PASSIVE_PIN, ledNotes[randNumber]); // Play the corresponding note on the passive buzzer
-// delay(ledOnTime);                             // Wait for the specified on time before turning off the LED
-// digitalWrite(ledPins[randNumber], LOW);       // Turn off the LED corresponding to the random number
-// noTone(BUZZ_PASSIVE_PIN);                     // Stop the sound on the passive buzzer
-// delay(ledOffTime);                            // Wait for the specified off time before the next loop iteration
-
-// Testing the buzzer and LEDs for correct sequence
-// Serial.println("Testing correct round feedback");
-// correctSequence(); // Call the function to test the correct sequence
-// delay(1000);       // Wait for a second before testing the next sequence
-
-// Serial.println("Testing incorrect round feedback");
-// incorrectSequence(); // Call the function to test the incorrect sequence
-// delay(1000);         // Wait for a second before the next loop iteration
